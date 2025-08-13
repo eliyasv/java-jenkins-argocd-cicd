@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'abhishekf5/maven-abhishek-docker-agent:v1'
+      image 'maven:3.9.9-eclipse-temurin-17'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
       // alwaysPull true
     }
@@ -21,12 +21,6 @@ pipeline {
       }
     }
     stage('Static Code Analysis') {
-      agent {
-      docker {
-         image 'maven:3.9.9-eclipse-temurin-17'
-        args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-          }
-          }
       environment {
         SONAR_URL = "http://3.87.35.15:9000"
       }
