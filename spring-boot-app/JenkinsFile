@@ -56,8 +56,9 @@ pipeline {
           checkout scm  // guarantees .git exists here
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
               // Edit the manifest 
-              dir('spring-boot-app-manifests')
+              dir('spring-boot-app-manifests') {
                 sh 'sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" deployment.yml'
+            }
                 // Commit and push from repo root
                 sh '''
                     git config user.email "eliyasvarghese97@gmail.com"
