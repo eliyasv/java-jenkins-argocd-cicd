@@ -16,15 +16,15 @@ pipeline {
     stage('Build and Test') {
       steps {
       dir('spring-boot-app') {  // Set the working directory
-         sh 'ls -ltr'           // List files for debugging
-         sh 'mvn -v'            // Displays Maven version information
-         sh 'mvn clean package' // Build the project and package it
+         sh 'ls -ltr'           // (optional) List files for debugging
+         sh 'mvn -v'            // (optional) Displays Maven version information
+         sh 'mvn clean package' // Build the artifact and package it to use in docker image
         }
       }
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://3.87.35.15:9000"    // URL of the SonarQube server
+        SONAR_URL = "http://3.87.35.15:9000"    // update URL of the SonarQube server
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
