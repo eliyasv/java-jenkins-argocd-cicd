@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'ignus07/maven-java-docker:17' // Image created with maven and java installed
+      image 'ignus07/maven-java-docker:17' // Image created with maven and java installed so that all the stages can be executed inside the container to lessen the steps and resourses
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // Mount Docker socket to access the host's Docker daemon
       // alwaysPull true   // (Optional) Always pull the latest image
     }
@@ -10,7 +10,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/eliyasv/java-jenkins-argocd-cicd.git'   // Checkout code from main branch (commented out since i am using scm option instead of script in Jenkins )
+        //git branch: 'main', url: 'https://github.com/eliyasv/java-jenkins-argocd-cicd.git'   // Checkout code from main branch (commented out since i am using scm option and jenkinsfile is in the src code repo)
       }
     }
     stage('Build and Test') {
@@ -24,7 +24,7 @@ pipeline {
     }
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://54.152.173.19:9000"    // update URL of the SonarQube server
+        SONAR_URL = "http://54.152.173.19:9000"    // add URL of the SonarQube server here
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -53,7 +53,7 @@ pipeline {
         }
       }
     }
-    stage('Update Deployment File') {  // This step utomates updating the Kubernetes deployment manifest with the new Docker image tag and pushes this change to the GitHub repository using stored credentials. Then Gitops tools like Argo CD can be used for deployment
+    stage('Update Deployment File') {  // This step utomates updating the Kubernetes deployment manifest with the new Docker image tag and pushes this change to mentioned GitHub repository using stored credentials. Then Gitops tools like Argo CD can be used for deployment
         
         steps {
 
@@ -62,16 +62,17 @@ pipeline {
                 sh '''
                     set -e 
                     rm -rf repo || true
-                    GIT_REPO_NAME= "java-jenkins-argocd-cicd"
-                    GIT_USER_NAME= "eliyasv"
-                    git clone https://github.com/$GIT_USER_NAME/$GIT_REPO_NAME.git repo
+                    GIT_REPO_NAME="java-jenkins-argocd-cicd" 
+                    GIT_USER_NAME="eliyasv"
+                    git clone https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git repo
                     cd repo
                     git config user.email "eliyasvarghese97@gmail.com"
                     git config user.name "eliyasv"
-                    sed -i "s/replaceImageTag/$BUILD_NUMBER/g" spring-boot-app-manifests/deployment.yml
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" spring-boot-app-manifests/deployment.yml
                     git add spring-boot-app-manifests/deployment.yml
-                    git commit -m "Update deployment image to version $BUILD_NUMBER" || echo "No changes to commit"
-                    git push https://$GITHUB_TOKEN@github.com/$GIT_USER_NAME/$GIT_REPO_NAME HEAD:main
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git HEAD:main
                 '''
               }
             
