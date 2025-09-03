@@ -48,7 +48,7 @@ sudo apt-get install jenkins
 
 ```
 
-### Access jenkins at 👉 http://<public ip address of ec2>:8080 and follow on screen info to unlock and login
+### Access jenkins at 👉 http://public ip address of ec2:8080 and follow on screen info to unlock and login
 
 ## ⚙️ Step 3: Install Required Plugins
 
@@ -59,7 +59,7 @@ install:
 * Sonarqube Scanner
 
 🔄 After installing each plugin, restart Jenkins by visiting:
-👉 http://<EC2-Public-IP>:8080/restart
+👉 http://EC2-Public-IP:8080/restart
 
 
 ## ⚙️ Step 4: Configure Docker
@@ -93,7 +93,7 @@ cd /opt/sonarqube-10.4.1.88267/bin/linux-x86-64
 ./sonar.sh start
 
 ```
-### Access Sonarqube at 👉 http://<public ip address of ec2>:9000
+### Access Sonarqube at 👉 http://"public ip address of ec2":9000
 
 Generate a token:
 Account → Administrator → Security → Generate Token
@@ -166,7 +166,7 @@ echo "<encripted password>" | base64 -d
 ```
 ### Then login and confiqure the server
 Login at:
-👉 http://<NodePort-URL>
+👉 http://NodePort-URL
 
 * Create new application
 configure with the repo url and path to manifest file to track 
