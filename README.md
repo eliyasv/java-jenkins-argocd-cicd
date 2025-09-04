@@ -6,7 +6,6 @@ This guide walks through setting up a **CI/CD pipeline** on an AWS EC2 instance 
 
 ## 📌 Prerequisites  
 
-- AWS account with permissions to create EC2 and Security Groups  
 - Ubuntu EC2 instance (`t2.medium` or higher recommended)  
 - Security Group inbound rules:  
   - `22` → SSH  
@@ -112,6 +111,8 @@ add the creds for
 ## ⚙️ Step 7: Jenkins Pipeline
 
 ### Refer the JenkinsFile for stages and details
+
+Uses a Docker-based Jenkins agent with image ignus07/maven-java-docker:17, running as root and mounting the host Docker socket to enable Docker build/push inside the container.
 
 Jenkinsfile includes stages for:
 
