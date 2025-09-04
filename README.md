@@ -169,24 +169,26 @@ echo "<encripted password>" | base64 -d
 Login at:
 👉 http://NodePort-URL
 
-* Create new application
-configure with the repo url and path to manifest file to track 
+#### Create new application
 
-Application Name: app
-Project Name: default
-Sync Policy  - Automatic
+##### configure with the repo url and path to manifest file to track 
 
-* Source
-Repository URL: GitHub repo (e.g., https://github.com/user/repo)
-Revision: main
-Path: Path to manifests (e.g., spring-boot-app-manifests/)
+* Application Name: app
+* Project Name: default
+* Sync Policy  - Automatic
 
-* Destination
-Cluster URL: https://kubernetes.default.svc (default K8s cluster)
-Namespace: default (or the namespace where you want to deploy)
+#### Source
+
+* Repository URL: GitHub repo (e.g., https://github.com/user/repo)
+* Revision: main
+* Path: Path to manifests (e.g., spring-boot-app-manifests/)
+
+#### Destination
+
+* Cluster URL: https://kubernetes.default.svc (default K8s cluster)
+* Namespace: default (or the namespace where you want to deploy)
 
 ### Then the argo cd will automaticaly sync the manifest files each time a change or drift is detected
-
 
 
 #### reference https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero/tree/main/java-maven-sonar-argocd-helm-k8s/spring-boot-app
